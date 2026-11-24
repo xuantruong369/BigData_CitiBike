@@ -1,0 +1,41 @@
+
+FROM apache/hadoop:3.5.0
+
+USER root
+
+ENV SQOOP_VERSION=1.4.7
+ENV POSTGRESQL_JDBC_VERSION=42.7.14
+
+ENV HADOOP_HOME=/opt/hadoop
+ENV HADOOP_COMMON_HOME=/opt/hadoop
+ENV HADOOP_MAPRED_HOME=/opt/hadoop
+ENV SQOOP_HOME=/opt/sqoop
+ENV HADOOP_CONF_DIR=/opt/sqoop/conf
+
+# Ưu tiên Commons CLI 1.3 để kiểm tra tương thích API giữa Sqoop và Hadoop 3.5.0
+ENV SQOOP_USER_CLASSPATH=/opt/sqoop/lib/commons-cli-1.3.jar
+ENV HADOOP_USER_CLASSPATH_FIRST=true
+
+RUN mkdir -p /opt/sqoop /opt/sqoop/conf && \
+    curl -fL https://archive.apache.org/dist/sqoop/1.4.7/sqoop-1.4.7.bin__hadoop-2.6.0.tar.gz \
+    -o /tmp/sqoop.tar.gz && \
+    tar -xzf /tmp/sqoop.tar.gz -C /opt/sqoop --strip-components=1 && \
+    rm /tmp/sqoop.tar.gz
+
+# PostgreSQL JDBC Driver
+RUN curl -fL https://repo1.maven.org/maven2/org/postgresql/postgresql/${POSTGRESQL_JDBC_VERSION}/postgresql-${POSTGRESQL_JDBC_VERSION}.jar \
+    -o ${SQOOP_HOME}/lib/postgresql-${POSTGRESQL_JDBC_VERSION}.jar
+
+# Commons CLI 1.3
+RUN curl -fL https://repo1.maven.org/maven2/commons-cli/commons-cli/1.3/commons-cli-1.3.jar \
+    -o ${SQOOP_HOME}/lib/commons-cli-1.3.jar
+
+COPY config/sqoop/ /opt/sqoop/conf/
+
+RUN chown -R hadoop:users /opt/sqoop
+
+ENV PATH="${SQOOP_HOME}/bin:${HADOOP_HOME}/bin:${PATH}"
+
+USER hadoop
+
+CMD ["bash", "-c", "sleep infinity"]

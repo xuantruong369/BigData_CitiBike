@@ -18,6 +18,11 @@
         <value>file:///opt/hadoop/data/datanode</value>
     </property>
 
+    <property>
+        <name>dfs.datanode.hostname</name>
+        <value>hadoop</value>
+    </property>
+
     <!-- Địa chỉ giao tiếp RPC của NameNode -->
     <property>
         <name>dfs.namenode.rpc-address</name>
