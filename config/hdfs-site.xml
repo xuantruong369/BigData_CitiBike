@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<configuration>
+    <!-- Chỉ có một DataNode nên replication = 1 -->
+    <property>
+        <name>dfs.replication</name>
+        <value>1</value>
+    </property>
+
+    <!-- Thư mục lưu metadata của NameNode -->
+    <property>
+        <name>dfs.namenode.name.dir</name>
+        <value>file:///opt/hadoop/data/namenode</value>
+    </property>
+
+    <!-- Thư mục lưu các block dữ liệu của DataNode -->
+    <property>
+        <name>dfs.datanode.data.dir</name>
+        <value>file:///opt/hadoop/data/datanode</value>
+    </property>
+
+    <!-- Địa chỉ giao tiếp RPC của NameNode -->
+    <property>
+        <name>dfs.namenode.rpc-address</name>
+        <value>0.0.0.0:9000</value>
+    </property>
+
+    <!-- Giao diện quản lý NameNode -->
+    <property>
+        <name>dfs.namenode.http-address</name>
+        <value>0.0.0.0:9870</value>
+    </property>
+</configuration>

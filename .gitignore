@@ -1,0 +1,66 @@
+
+# ==============================
+# Environment variables & secrets
+# ==============================
+.env
+.env.*
+!.env.example
+
+# Credentials and private keys
+*.pem
+*.key
+*.jks
+*.keystore
+secrets/
+
+# ==============================
+# Hadoop runtime data
+# ==============================
+data/
+logs/
+tmp/
+
+# Hadoop NameNode / DataNode data
+namenode/
+datanode/
+
+# ==============================
+# Dataset
+# ==============================
+# Ignore large raw datasets
+datasets/
+dataset/
+raw-data/
+
+# Keep dataset documentation
+!datasets/README.md
+!dataset/README.md
+!raw-data/README.md
+
+# ==============================
+# Python
+# ==============================
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# ==============================
+# IDE & Editor
+# ==============================
+.vscode/
+.idea/
+*.swp
+
+# ==============================
+# OS
+# ==============================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ==============================
+# Logs
+# ==============================
+*.log

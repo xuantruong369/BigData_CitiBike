@@ -1,0 +1,37 @@
+services:
+  hadoop:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: hadoop-single-node
+
+    hostname: hadoop
+
+    ports:
+      # HDFS NameNode Web UI
+      - "9870:9870"
+
+      # HDFS RPC
+      - "9000:9000"
+
+      # HDFS DataNode Web UI
+      - "9864:9864"
+
+      # YARN ResourceManager Web UI
+      - "8088:8088"
+
+    volumes:
+      # Lưu metadata NameNode
+      - namenode_data:/opt/hadoop/data/namenode
+
+      # Lưu các block dữ liệu DataNode
+      - datanode_data:/opt/hadoop/data/datanode
+
+    mem_limit: 5g
+
+    restart: unless-stopped
+
+volumes:
+  namenode_data:
+  datanode_data:
