@@ -22,6 +22,8 @@ services:
       - "8088:8088"
 
     volumes:
+      - ./datasets/raw/citibike/2024:/data/citibike/2024:ro
+
       # Lưu metadata NameNode
       - namenode_data:/opt/hadoop/data/namenode
 
