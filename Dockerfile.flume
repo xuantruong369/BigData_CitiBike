@@ -1,0 +1,35 @@
+
+FROM apache/hadoop:3.5.0
+
+USER root
+
+ENV FLUME_VERSION=1.11.0
+ENV FLUME_HOME=/opt/flume
+ENV HADOOP_HOME=/opt/hadoop
+ENV HADOOP_CONF_DIR=/opt/hadoop/etc/hadoop
+ENV FLUME_JAVA_OPTS="-Xms256m -Xmx768m"
+
+# Install Apache Flume
+RUN mkdir -p ${FLUME_HOME} && \
+    curl -fL \
+    https://downloads.apache.org/flume/${FLUME_VERSION}/apache-flume-${FLUME_VERSION}-bin.tar.gz \
+    -o /tmp/flume.tar.gz && \
+    tar -xzf /tmp/flume.tar.gz \
+    -C ${FLUME_HOME} \
+    --strip-components=1 && \
+    rm /tmp/flume.tar.gz
+
+# Create persistent storage directories
+RUN mkdir -p \
+    /var/lib/flume/checkpoint \
+    /var/lib/flume/data \
+    /var/lib/flume/taildir && \
+    chown -R hadoop:users \
+    ${FLUME_HOME} \
+    /var/lib/flume
+
+ENV PATH="${FLUME_HOME}/bin:${HADOOP_HOME}/bin:${PATH}"
+
+USER hadoop
+
+CMD ["flume-ng", "agent", "--conf", "/opt/flume/conf", "--conf-file", "/opt/flume/conf/flume.conf", "--name", "citibike"]

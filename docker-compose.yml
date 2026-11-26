@@ -17,6 +17,7 @@ services:
       - ./datasets/raw/citibike/2024:/data/citibike/2024:ro
       - namenode_data:/opt/hadoop/data/namenode
       - datanode_data:/opt/hadoop/data/datanode
+      - ./logs/hadoop:/var/log/hadoop
 
     mem_limit: 5g
     restart: unless-stopped
@@ -43,7 +44,37 @@ services:
 
     restart: unless-stopped
 
+  flume:
+    build:
+      context: .
+      dockerfile: Dockerfile.flume
+
+    image: citibike-flume:1.11.0
+    container_name: citibike-flume
+    hostname: flume
+
+    depends_on:
+      - hadoop
+
+    volumes:
+      # Read Hadoop operational logs
+      - ./logs/hadoop:/var/log/hadoop:ro
+
+      # Flume Agent configuration
+      - ./config/flume/flume.conf:/opt/flume/conf/flume.conf:ro
+
+      # Hadoop client configuration
+      - ./config/flume/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml:ro
+      - ./config/flume/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml:ro
+
+      # Persistent Flume state
+      - flume_data:/var/lib/flume
+
+    mem_limit: 1g
+    restart: unless-stopped
+
 volumes:
   namenode_data:
   datanode_data:
   postgres_data:
+  flume_data:
