@@ -1,0 +1,32 @@
+
+FROM apache/hadoop:3.5.0
+
+USER root
+
+ENV HIVE_VERSION=4.1.0
+ENV POSTGRESQL_JDBC_VERSION=42.7.14
+
+ENV HIVE_HOME=/opt/hive
+ENV HADOOP_HOME=/opt/hadoop
+ENV HADOOP_CONF_DIR=/opt/hadoop/etc/hadoop
+
+ENV PATH="${HIVE_HOME}/bin:${HADOOP_HOME}/bin:${PATH}"
+
+# Install Apache Hive
+RUN mkdir -p ${HIVE_HOME} && \
+    curl -fL \
+    https://archive.apache.org/dist/hive/hive-${HIVE_VERSION}/apache-hive-${HIVE_VERSION}-bin.tar.gz \
+    -o /tmp/hive.tar.gz && \
+    tar -xzf /tmp/hive.tar.gz \
+    -C ${HIVE_HOME} \
+    --strip-components=1 && \
+    rm /tmp/hive.tar.gz
+
+# Install PostgreSQL JDBC driver for Hive Metastore
+RUN curl -fL \
+    https://repo.maven.apache.org/maven2/org/postgresql/postgresql/${POSTGRESQL_JDBC_VERSION}/postgresql-${POSTGRESQL_JDBC_VERSION}.jar \
+    -o ${HIVE_HOME}/lib/postgresql-${POSTGRESQL_JDBC_VERSION}.jar
+
+RUN chown -R hadoop:users ${HIVE_HOME}
+
+USER hadoop

@@ -73,6 +73,49 @@ services:
     mem_limit: 1g
     restart: unless-stopped
 
+  hive-metastore:
+    image: citibike-hive:4.1.0
+    container_name: citibike-hive-metastore
+    hostname: hive-metastore
+    depends_on:
+      postgres:
+        condition: service_healthy
+      hadoop:
+        condition: service_started
+    command: >
+      bash -c "schematool -dbType postgres -info &&
+      hive --service metastore"
+    ports:
+      - "9083:9083"
+    volumes:
+      - ./config/hive/hive-site.xml:/opt/hive/conf/hive-site.xml:ro
+      - ./config/hive/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml:ro
+      - ./config/hive/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml:ro
+    mem_limit: 1g
+    restart: unless-stopped
+
+  hiveserver2:
+    image: citibike-hive:4.1.0
+    container_name: citibike-hiveserver2
+    hostname: hiveserver2
+
+    environment:
+      HADOOP_HEAPSIZE: "1024"
+
+    depends_on:
+      - hive-metastore
+    command: >
+      hive --service hiveserver2
+    ports:
+      - "10000:10000"
+      - "10002:10002"
+    volumes:
+      - ./config/hive/hive-site.xml:/opt/hive/conf/hive-site.xml:ro
+      - ./config/hive/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml:ro
+      - ./config/hive/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml:ro
+    mem_limit: 2g
+    restart: unless-stopped
+
 volumes:
   namenode_data:
   datanode_data:

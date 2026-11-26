@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<configuration>
+    <!-- Hadoop chỉ có một DataNode -->
+    <property>
+        <name>dfs.replication</name>
+        <value>1</value>
+    </property>
+
+    <!-- Sử dụng hostname khi kết nối DataNode -->
+    <property>
+        <name>dfs.client.use.datanode.hostname</name>
+        <value>true</value>
+    </property>
+</configuration>

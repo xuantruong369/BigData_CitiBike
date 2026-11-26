@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<configuration>
+    <!-- Kết nối đến NameNode trong Hadoop container -->
+    <property>
+        <name>fs.defaultFS</name>
+        <value>hdfs://hadoop:9000</value>
+    </property>
+
+    <!-- Dùng hostname thay vì IP do DataNode quảng bá -->
+    <property>
+        <name>dfs.client.use.datanode.hostname</name>
+        <value>true</value>
+    </property>
+</configuration>
