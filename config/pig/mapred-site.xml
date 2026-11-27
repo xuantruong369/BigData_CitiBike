@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<configuration>
+    <!-- Sử dụng YARN để thực thi MapReduce -->
+    <property>
+        <name>mapreduce.framework.name</name>
+        <value>yarn</value>
+    </property>
+
+    <!-- Classpath cho các tiến trình MapReduce -->
+    <property>
+        <name>mapreduce.application.classpath</name>
+        <value>/opt/hadoop/share/hadoop/mapreduce/*,/opt/hadoop/share/hadoop/mapreduce/lib/*</value>
+    </property>
+
+    <!-- Giới hạn bộ nhớ cho Map và Reduce -->
+    <property>
+        <name>mapreduce.map.memory.mb</name>
+        <value>512</value>
+    </property>
+
+    <property>
+        <name>mapreduce.reduce.memory.mb</name>
+        <value>512</value>
+    </property>
+
+    <!-- Giới hạn bộ nhớ JVM -->
+    <property>
+        <name>mapreduce.map.java.opts</name>
+        <value>-Xmx384m</value>
+    </property>
+
+    <property>
+        <name>mapreduce.reduce.java.opts</name>
+        <value>-Xmx384m</value>
+    </property>
+
+    <!-- JobHistoryServer -->
+    <property>
+        <name>mapreduce.jobhistory.address</name>
+        <value>hadoop:10020</value>
+    </property>
+
+    <property>
+        <name>mapreduce.jobhistory.webapp.address</name>
+        <value>hadoop:19888</value>
+    </property>
+
+    <property>
+        <name>mapreduce.jobhistory.intermediate-done-dir</name>
+        <value>/mr-history/tmp</value>
+    </property>
+
+    <property>
+        <name>mapreduce.jobhistory.done-dir</name>
+        <value>/mr-history/done</value>
+    </property>
+</configuration>

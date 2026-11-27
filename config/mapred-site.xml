@@ -33,4 +33,25 @@
         <name>mapreduce.reduce.java.opts</name>
         <value>-Xmx384m</value>
     </property>
+
+    <!-- JobHistoryServer -->
+    <property>
+        <name>mapreduce.jobhistory.address</name>
+        <value>hadoop:10020</value>
+    </property>
+
+    <property>
+        <name>mapreduce.jobhistory.webapp.address</name>
+        <value>hadoop:19888</value>
+    </property>
+
+    <property>
+        <name>mapreduce.jobhistory.intermediate-done-dir</name>
+        <value>/mr-history/tmp</value>
+    </property>
+
+    <property>
+        <name>mapreduce.jobhistory.done-dir</name>
+        <value>/mr-history/done</value>
+    </property>
 </configuration>

@@ -116,6 +116,30 @@ services:
     mem_limit: 2g
     restart: unless-stopped
 
+  pig:
+    image: citibike-pig:0.18.0
+    container_name: citibike-pig
+    hostname: pig
+
+    depends_on:
+      - hadoop
+
+    environment:
+      HADOOP_HOME: /opt/hadoop
+      HADOOP_CONF_DIR: /opt/hadoop/etc/hadoop
+      PIG_HOME: /opt/pig
+
+    command: ["bash", "-lc", "sleep infinity"]
+
+    volumes:
+      - ./config/pig/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml:ro
+      - ./config/pig/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml:ro
+      - ./config/pig/yarn-site.xml:/opt/hadoop/etc/hadoop/yarn-site.xml:ro
+      - ./config/pig/mapred-site.xml:/opt/hadoop/etc/hadoop/mapred-site.xml:ro
+
+    mem_limit: 2g
+    restart: unless-stopped
+
 volumes:
   namenode_data:
   datanode_data:
